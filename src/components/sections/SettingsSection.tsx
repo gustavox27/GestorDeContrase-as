@@ -279,7 +279,7 @@ export const SettingsSection = () => {
                   href="mailto:support@securevault.com"
                   className="text-blue-600 hover:underline break-all"
                 >
-                  support@securevault.com
+                  gustavo18n@Hotmail.com
                 </a>
               </div>
               <div className="pt-2 border-t border-gray-200">

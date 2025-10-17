@@ -18,10 +18,20 @@ export const AnalysisSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user && encryptionKey) {
-      analyzePasswords();
-    }
-  }, [user, encryptionKey]);
+    let mounted = true;
+
+    const fetchAnalysis = async () => {
+      if (user && encryptionKey && mounted) {
+        await analyzePasswords();
+      }
+    };
+
+    fetchAnalysis();
+
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id, encryptionKey]);
 
   const analyzePasswords = async () => {
     if (!encryptionKey) return;

@@ -10,10 +10,20 @@ export const NotificationsSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      loadAlerts();
-    }
-  }, [user]);
+    let mounted = true;
+
+    const fetchAlerts = async () => {
+      if (user && mounted) {
+        await loadAlerts();
+      }
+    };
+
+    fetchAlerts();
+
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id]);
 
   const loadAlerts = async () => {
     try {

@@ -32,10 +32,20 @@ export const VaultDashboard = () => {
   const [filterFavorites, setFilterFavorites] = useState(false);
 
   useEffect(() => {
-    if (user && encryptionKey) {
-      loadVaultItems();
-    }
-  }, [user, encryptionKey]);
+    let mounted = true;
+
+    const fetchItems = async () => {
+      if (user && encryptionKey && mounted) {
+        await loadVaultItems();
+      }
+    };
+
+    fetchItems();
+
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id, encryptionKey]);
 
   useEffect(() => {
     filterItems();

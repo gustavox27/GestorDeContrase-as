@@ -39,11 +39,21 @@ export const MainDashboard = () => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   useEffect(() => {
-    if (user && encryptionKey) {
-      loadVaultItems();
-      loadUnreadNotifications();
-    }
-  }, [user, encryptionKey]);
+    let mounted = true;
+
+    const loadData = async () => {
+      if (user && encryptionKey && mounted) {
+        await loadVaultItems();
+        await loadUnreadNotifications();
+      }
+    };
+
+    loadData();
+
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id, encryptionKey]);
 
   useEffect(() => {
     filterItems();
@@ -65,7 +75,7 @@ export const MainDashboard = () => {
   };
 
   const loadVaultItems = async () => {
-    if (!encryptionKey) return;
+    if (!encryptionKey || !user) return;
 
     try {
       const { data, error } = await supabase
